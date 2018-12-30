@@ -1,12 +1,12 @@
 import { IPosition, IGame, EventObject } from './interfaces';
-import { renderCleanGameScreen, renderGameState } from './render-functions';
+import { renderCleanGameScreen, renderGameState } from './render';
 import { UP, DOWN, LEFT, RIGHT } from './constants';
 import {
     checkFieldAvailability,
     checkGameFieldConstraints,
     checkIfEqualPositions
-} from './check-functions';
-import { setAwardPoint } from './award-point-functions';
+} from './check-positions';
+import { setAwardPoint } from './award-point';
 let positionArr: IPosition[] = [];
 
 let awardPoint: null | IPosition = null;

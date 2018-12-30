@@ -1,6 +1,6 @@
 import { IPosition } from './interfaces';
 import { FIELD_SIZE } from './constants';
-import { checkFieldAvailability } from './check-functions';
+import { checkFieldAvailability } from './check-positions';
 
 const calculateRandomPosition: { (fieldSize: number): number } = (fieldSize) => {
     return Math.floor(Math.random() * (fieldSize));
