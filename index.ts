@@ -15,9 +15,7 @@ interface EventObject {
  */
 const fieldSize: number = 10; //the field of the game is 20x20 fields big
 
-const positionArr: IPosition[] = [
-    { row: 0, col: 0 },
-];
+const positionArr: IPosition[] = [];
 
 let awardPoint: null | IPosition = null;
 
@@ -156,14 +154,20 @@ const placeAwardPoint = () => {
     const calculateRandomPosition = () => {
         return Math.floor(Math.random() * (fieldSize));
     }
-    let newAwardPointPosition: IPosition = {
-        row: calculateRandomPosition(),
-        col: calculateRandomPosition()
+    const getNewPoint: { (): IPosition } = () => {
+        return {
+            row: calculateRandomPosition(),
+            col: calculateRandomPosition()
+        }
     }
+    let newAwardPointPosition: IPosition = getNewPoint();
+
     if (checkFieldAvailability(newAwardPointPosition)) {
+        awardPoint = newAwardPointPosition;
+    } else {
         placeAwardPoint();
     }
-    awardPoint = newAwardPointPosition;
+    return;
 }
 
 const gameMove: { (): void } = () => {

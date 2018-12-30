@@ -3,9 +3,7 @@
  * GLOBAL VARIABLES
  */
 const fieldSize = 10; //the field of the game is 20x20 fields big
-const positionArr = [
-    { row: 0, col: 0 },
-];
+const positionArr = [];
 let awardPoint = null;
 let game = false;
 /**
@@ -135,14 +133,20 @@ const placeAwardPoint = () => {
     const calculateRandomPosition = () => {
         return Math.floor(Math.random() * (fieldSize));
     };
-    let newAwardPointPosition = {
-        row: calculateRandomPosition(),
-        col: calculateRandomPosition()
+    const getNewPoint = () => {
+        return {
+            row: calculateRandomPosition(),
+            col: calculateRandomPosition()
+        };
     };
+    let newAwardPointPosition = getNewPoint();
     if (checkFieldAvailability(newAwardPointPosition)) {
+        awardPoint = newAwardPointPosition;
+    }
+    else {
         placeAwardPoint();
     }
-    awardPoint = newAwardPointPosition;
+    return;
 };
 const gameMove = () => {
     let newPosition = calculateNewPosition(positionArr[0], currentDirection);
