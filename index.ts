@@ -30,7 +30,7 @@ const LEFT: string = 'LEFT';
 const RIGHT: string = 'RIGHT';
 
 let currentDirection: string = RIGHT;
-
+let newDirection: string | null = null;
 /**
  * FUNCTIONS
  */
@@ -56,32 +56,54 @@ const resetPositionArr: { (): void } = () => {
 const setKeyboardControls = (event: EventObject) => {
     switch (event.keyCode) {
         case 38:
-            if (currentDirection != DOWN) {
-                currentDirection = UP;
-            }
+            newDirection = UP;
             break;
         case 40:
-            if (currentDirection != UP) {
-                currentDirection = DOWN;
-            }
+            newDirection = DOWN;
             break;
         case 37:
-            if (currentDirection != RIGHT) {
-                currentDirection = LEFT;
-            }
+            newDirection = LEFT;
             break;
         case 39:
-            if (currentDirection != LEFT) {
-                currentDirection = RIGHT;
-            }
+            newDirection = RIGHT;
             break;
-        case 32:
-            console.log('break');
-            break;
-        case 27:
-            console.log('finish game');
+        // case 32:
+        //     console.log('break');
+        //     break;
+        // case 27:
+        //     console.log('finish game');
     };
 };
+// const setKeyboardControls = (event: EventObject) => {
+//     switch (event.keyCode) {
+//         case 38:
+//             if (currentDirection != DOWN) {
+//                 currentDirection = UP;
+//             }
+//             break;
+//         case 40:
+//             if (currentDirection != UP) {
+//                 currentDirection = DOWN;
+//             }
+//             break;
+//         case 37:
+//             if (currentDirection != RIGHT) {
+//                 currentDirection = LEFT;
+//             }
+//             break;
+//         case 39:
+//             if (currentDirection != LEFT) {
+//                 currentDirection = RIGHT;
+//             }
+//             break;
+//         case 32:
+//             console.log('break');
+//             break;
+//         case 27:
+//             console.log('finish game');
+//     };
+//     console.log(currentDirection);
+// };
 
 const handleKeyboardControls = () => {
     if (game) {
@@ -171,6 +193,31 @@ const placeAwardPoint = () => {
 }
 
 const gameMove: { (): void } = () => {
+    if (newDirection && newDirection !== currentDirection) {
+
+    }
+    switch (newDirection) {
+        case UP:
+            if (currentDirection !== DOWN) {
+                currentDirection = newDirection;
+            }
+            break;
+        case DOWN:
+            if (currentDirection !== UP) {
+                currentDirection = newDirection;
+            }
+            break;
+        case LEFT:
+            if (currentDirection !== RIGHT) {
+                currentDirection = newDirection;
+            }
+            break;
+        case RIGHT:
+            if (currentDirection !== LEFT) {
+                currentDirection = newDirection;
+            }
+            break;
+    }
     let newPosition = calculateNewPosition(positionArr[0], currentDirection);
     if (!checkGameFieldConstraints(newPosition)) {
         gameOver();
