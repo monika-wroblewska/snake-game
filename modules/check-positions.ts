@@ -1,5 +1,5 @@
 import { IPosition } from './interfaces';
-import {FIELD_SIZE} from './constants';
+import {FIELD_SIZE, UP, DOWN, LEFT, RIGHT} from './constants';
 
 export const checkGameFieldConstraints: { (position: IPosition): boolean } = (position) => {
     if (position.row < 0 || position.row >= FIELD_SIZE) {
@@ -26,3 +26,18 @@ export const checkIfEqualPositions: { (position1: IPosition, position2: IPositio
     }
     return false;
 };
+
+export const calculateNewPosition: { (headPosition: IPosition, direction: Symbol): IPosition } = (headPosition, direction) => {
+    switch (direction) {
+        case RIGHT:
+            return { ...headPosition, col: (headPosition.col + 1) };
+        case UP:
+            return { ...headPosition, row: (headPosition.row + 1) }
+        case LEFT:
+            return { ...headPosition, col: (headPosition.col - 1) };
+        case DOWN:
+            return { ...headPosition, row: (headPosition.row - 1) };
+        default:
+            return headPosition;
+    }
+}

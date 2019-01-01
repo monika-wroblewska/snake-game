@@ -1,3 +1,4 @@
-import { startGame } from './modules/game';
+import { Game } from './modules/game';
 
-startGame();
+let game = new Game();
+game.start();

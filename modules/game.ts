@@ -1,154 +1,131 @@
-import { IPosition, IGame, EventObject } from './interfaces';
+import { IPosition, EventObject } from './interfaces';
 import { renderCleanGameScreen, renderGameState } from './render';
 import { UP, DOWN, LEFT, RIGHT } from './constants';
 import {
     checkFieldAvailability,
     checkGameFieldConstraints,
-    checkIfEqualPositions
+    checkIfEqualPositions,
+    calculateNewPosition
 } from './check-positions';
 import { setAwardPoint } from './award-point';
-let positionArr: IPosition[] = [];
-
-let awardPoint: null | IPosition = null;
-
-let game: IGame = {
-    playing: true,
-    score: 0
-};
-
-let timeout: number = 500;
-
-let award = 10;
 
 /**
- * DIRECTIONS
- * */
-
-let currentDirection: Symbol = RIGHT;
-
-let newDirection: Symbol | null = null;
-
-/**
- * GAME
+ * GAME CLASS
  */
-const resetPositionArr: { (): IPosition[] } = () => {
-    return [{ row: 0, col: 0 }];
-};
+export class Game {
+    private _playing: boolean;
+    private _score: number;
+    private _positionArr: IPosition[];
+    private _awardPointPosition: IPosition | null;
+    private _awardPoints: number;
+    private _gameTimeoutIdentifier: Object | null;
+    private _gameTimeoutMiliseconds: number;
+    private _currentDirection: Symbol;
+    private _newDirection: Symbol | null;
 
-const setKeyboardControls = (event: EventObject) => {
-    switch (event.keyCode) {
-        case 38:
-            newDirection = UP
-            break;
-        case 40:
-            newDirection = DOWN;
-            break;
-        case 37:
-            newDirection = LEFT;
-            break;
-        case 39:
-            newDirection = RIGHT;
-            break;
-        // case 32:
-        //     console.log('break');
-        //     break;
-        // case 27:
-        //     console.log('finish game');
-    };
-};
+    constructor() {
+        this._playing = false;
+        this._score = 0;
+        this._positionArr = [{ row: 0, col: 0 }]
+        this._awardPointPosition = null;
+        this._awardPoints = 10;
+        this._gameTimeoutIdentifier = null;
+        this._gameTimeoutMiliseconds = 500;
+        this._currentDirection = RIGHT;
+        this._newDirection = null;
+    }
 
-const handleKeyboardControls: { (game: IGame): void } = (game) => {
-    if (game.playing) {
-        document.addEventListener('keyup', setKeyboardControls, false);
-    } else {
-        document.removeEventListener('keyup', setKeyboardControls, false);
-    }
-};
-
-const calculateNewPosition: { (headPosition: IPosition, direction: Symbol): IPosition } = (headPosition, direction) => {
-    switch (direction) {
-        case RIGHT:
-            return { ...headPosition, col: (headPosition.col + 1) };
-        case UP:
-            return { ...headPosition, row: (headPosition.row + 1) }
-        case LEFT:
-            return { ...headPosition, col: (headPosition.col - 1) };
-        case DOWN:
-            return { ...headPosition, row: (headPosition.row - 1) };
-        default:
-            return headPosition;
-    }
-}
-
-const gameMove: { (): void } = () => {
-    if (newDirection && newDirection !== currentDirection) {
-        switch (newDirection) {
-            case UP:
-                if (currentDirection !== DOWN) {
-                    currentDirection = newDirection;
-                }
-                break;
-            case DOWN:
-                if (currentDirection !== UP) {
-                    currentDirection = newDirection;
-                }
-                break;
-            case LEFT:
-                if (currentDirection !== RIGHT) {
-                    currentDirection = newDirection;
-                }
-                break;
-            case RIGHT:
-                if (currentDirection !== LEFT) {
-                    currentDirection = newDirection;
-                }
-                break;
-        }
-    }
-    let newPosition = calculateNewPosition(positionArr[0], currentDirection);
-    if (!checkGameFieldConstraints(newPosition)) {
-        gameOver();
-    }
-    if (!checkFieldAvailability(positionArr, newPosition)) {
-        gameOver();
-    }
-    if (awardPoint && checkIfEqualPositions(newPosition, awardPoint)) {
-        positionArr.push(awardPoint);
-        awardPoint = setAwardPoint(positionArr);
-        game.score += award;
-    }
-    positionArr.unshift(newPosition);
-    positionArr.pop();
-    if (game.playing) {
+    start() {
+        this._playing = true;
+        this.handleEventListeners();
+        this._positionArr = [{ row: 0, col: 0 }];
+        this._awardPointPosition = setAwardPoint(this._positionArr);
         renderCleanGameScreen();
-        renderGameState(positionArr, awardPoint);
+        renderGameState(this._positionArr, this._awardPointPosition);
+        this.play();
+    }
+    play() {
+        this._gameTimeoutIdentifier = setTimeout(() => {
+            this.gameMove();
+            renderGameState(this._positionArr, this._awardPointPosition);
+            if (this._playing) {
+                this.play();
+            }
+        }, this._gameTimeoutMiliseconds);
+    }
+
+    gameMove() {
+        console.log(this._currentDirection);
+        if (this._newDirection && this._newDirection !== this._currentDirection) {
+            switch (this._newDirection) {
+                case UP:
+                    if (this._currentDirection !== DOWN) {
+                        this._currentDirection = this._newDirection;
+                    }
+                    break;
+                case DOWN:
+                    if (this._currentDirection !== UP) {
+                        this._currentDirection = this._newDirection;
+                    }
+                    break;
+                case LEFT:
+                    if (this._currentDirection !== RIGHT) {
+                        this._currentDirection = this._newDirection;
+                    }
+                    break;
+                case RIGHT:
+                    if (this._currentDirection !== LEFT) {
+                        this._currentDirection = this._newDirection;
+                    }
+                    break;
+            }
+        }
+        let newPosition = calculateNewPosition(this._positionArr[0], this._currentDirection);
+        if (!checkGameFieldConstraints(newPosition)) {
+            this.gameOver();
+        }
+        if (!checkFieldAvailability(this._positionArr, newPosition)) {
+            this.gameOver();
+        }
+        if (this._awardPointPosition && checkIfEqualPositions(newPosition, this._awardPointPosition)) {
+            this._positionArr.push(this._awardPointPosition);
+            this._awardPointPosition = setAwardPoint(this._positionArr);
+            this._score += this._awardPoints;
+        }
+        this._positionArr.unshift(newPosition);
+        this._positionArr.pop();
+        if (this._playing) {
+            renderCleanGameScreen();
+            renderGameState(this._positionArr, this._awardPointPosition);
+        }
+    }
+    gameOver() {
+        this._playing = false;
+        this.handleEventListeners();
+    }
+
+    handleEventListeners() {
+        if (this._playing) {
+            document.addEventListener('keyup', this.setKeyboardControls.bind(this), false);
+        } else {
+            document.removeEventListener('keyup', this.setKeyboardControls.bind(this), false);
+        }
+    }
+    setKeyboardControls(event: EventObject) {
+        console.log('fire');
+        switch (event.keyCode) {
+            case 38:
+                this._newDirection = UP;
+                break;
+            case 40:
+                this._newDirection = DOWN;
+                break;
+            case 37:
+                this._newDirection = LEFT;
+                break;
+            case 39:
+                this._newDirection = RIGHT;
+                break;
+        }
     }
 }
-
-const gameOver: { (): void } = () => {
-    game.playing = false;
-    handleKeyboardControls(game);
-}
-
-const playGame = () => {
-    setTimeout(() => {
-        gameMove();
-        renderGameState(positionArr, awardPoint);
-        if (game.playing) {
-            playGame();
-        }
-    }, timeout);
-}
-
-export const startGame: { (): void } = () => {
-    game = {
-        playing: true,
-        score: 0
-    };
-    handleKeyboardControls(game);
-    positionArr = resetPositionArr();
-    awardPoint = setAwardPoint(positionArr);
-    renderCleanGameScreen();
-    renderGameState(positionArr, awardPoint);
-    playGame();
-};

@@ -6,11 +6,6 @@ export interface IPosition {
     col: number;
 }
 
-export interface IGame {
-    playing: boolean;
-    score: number;
-}
-
 export interface EventObject {
     keyCode: number;
 }
