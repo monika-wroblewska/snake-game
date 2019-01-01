@@ -24,17 +24,19 @@ export class Game {
     private _newDirection: Symbol | null;
 
     constructor() {
-        this._playing = false;
+        this._playing = true;
         this._score = 0;
         this._positionArr = [{ row: 0, col: 0 }]
         this._awardPointPosition = null;
         this._awardPoints = 10;
         this._gameTimeoutIdentifier = null;
-        this._gameTimeoutMiliseconds = 500;
+        this._gameTimeoutMiliseconds = 300;
         this._currentDirection = RIGHT;
         this._newDirection = null;
     }
-
+    get playing(): boolean {
+        return this._playing;
+    }
     start() {
         this._playing = true;
         this.handleEventListeners();

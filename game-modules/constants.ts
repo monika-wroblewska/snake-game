@@ -1,4 +1,4 @@
-export const FIELD_SIZE: number = 10;
+export const FIELD_SIZE: number = 20;
 
 //directions
 export const UP = Symbol('UP');

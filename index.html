@@ -3,13 +3,19 @@
 
 <head>
     <title>The Snake Game</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
     <h1>Snake</h1>
-    <section id="score"></section>
-    <div id="game"></div>
+    <div class="snake__start-screen">
+        <div>To start a game press SPACE</div>
+    </div>
+    <div class="snake__game-screen">
+        <section id="score"></section>
+        <div id="snake__game">
+        </div>
+    </div>
+    <div class="snake__game-over-screen"></div>
 </body>
 <script src="index.ts"></script>
 

@@ -15,21 +15,21 @@ export const renderCleanGameScreen: { (): void } = () => {
         for (let j: number = 0; j < FIELD_SIZE; j++) {
             row += `<div class="field row${i} col${j}"></div>`
         }
-        fieldHTML += `<div class="row">${row}</div>`;
+        fieldHTML += `<div class="game-row">${row}</div>`;
     }
-    const fieldElement = document.getElementById('game');
+    const fieldElement = document.getElementById('snake__game');
     if (fieldElement) {
-        fieldElement.innerHTML = `<div class="game-field">${fieldHTML}</div>`
+        fieldElement.innerHTML = `<div class="game-fields">${fieldHTML}</div>`
     }
 };
 
 export const renderGameState: { (postionArr: IPosition[], awardPoint: IPosition | null): void } = (positionArr, awardPoint) => {
     //map the snake's position
     positionArr.map((position) => {
-        addClass(position, 'active');
+        addClass(position, 'field--active');
     });
     //add awardPoint position
     if (awardPoint) {
-        addClass(awardPoint, 'award');
+        addClass(awardPoint, 'field--award');
     }
 };
