@@ -17,7 +17,7 @@ export const renderCleanGameScreen: { (): void } = () => {
         }
         fieldHTML += `<div class="game-row">${row}</div>`;
     }
-    const fieldElement = document.getElementById('snake__game');
+    const fieldElement = document.getElementById('snake-game');
     if (fieldElement) {
         fieldElement.innerHTML = `<div class="game-fields">${fieldHTML}</div>`
     }
@@ -31,5 +31,12 @@ export const renderGameState: { (postionArr: IPosition[], awardPoint: IPosition 
     //add awardPoint position
     if (awardPoint) {
         addClass(awardPoint, 'field--award');
+    }
+};
+
+export const renderScore: { (score: number): void } = score => {
+    let DOMElem = document.getElementById('score');
+    if (DOMElem) {
+        DOMElem.innerHTML = String(score);
     }
 };

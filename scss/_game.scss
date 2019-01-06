@@ -1,0 +1,8 @@
+.snake{
+    background-color: lime;
+    &__game{
+    display: flex; 
+    justify-content: center;
+    align-content: center;
+}
+}

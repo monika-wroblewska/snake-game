@@ -1,5 +1,9 @@
 import { IPosition, EventObject } from './interfaces';
-import { renderCleanGameScreen, renderGameState } from './render';
+import {
+    renderCleanGameScreen,
+    renderGameState,
+    renderScore
+} from './render';
 import { UP, DOWN, LEFT, RIGHT } from './constants';
 import {
     checkFieldAvailability,
@@ -18,7 +22,7 @@ export class Game {
     private _positionArr: IPosition[];
     private _awardPointPosition: IPosition | null;
     private _awardPoints: number;
-    private _gameTimeoutIdentifier: Object | null;
+    private _gameTimeoutIdentifier: NodeJS.Timer | null;
     private _gameTimeoutMiliseconds: number;
     private _currentDirection: Symbol;
     private _newDirection: Symbol | null;
@@ -44,6 +48,7 @@ export class Game {
         this._awardPointPosition = setAwardPoint(this._positionArr);
         renderCleanGameScreen();
         renderGameState(this._positionArr, this._awardPointPosition);
+        renderScore(this._score);
         this.play();
     }
     play() {
@@ -57,7 +62,6 @@ export class Game {
     }
 
     gameMove() {
-        console.log(this._currentDirection);
         if (this._newDirection && this._newDirection !== this._currentDirection) {
             switch (this._newDirection) {
                 case UP:
@@ -92,7 +96,7 @@ export class Game {
         if (this._awardPointPosition && checkIfEqualPositions(newPosition, this._awardPointPosition)) {
             this._positionArr.push(this._awardPointPosition);
             this._awardPointPosition = setAwardPoint(this._positionArr);
-            this._score += this._awardPoints;
+            this.addPointsToScore(this._awardPoints);
         }
         this._positionArr.unshift(newPosition);
         this._positionArr.pop();
@@ -114,7 +118,6 @@ export class Game {
         }
     }
     setKeyboardControls(event: EventObject) {
-        console.log('fire');
         switch (event.keyCode) {
             case 38:
                 this._newDirection = UP;
@@ -128,6 +131,22 @@ export class Game {
             case 39:
                 this._newDirection = RIGHT;
                 break;
+            case 32:
+                this.pauseGame();
+                break;
         }
+    }
+    addPointsToScore(points: number) {
+        this._score += points;
+        renderScore(this._score);
+    }
+    pauseGame() {
+        if (this._gameTimeoutIdentifier !== null) {
+            clearTimeout(this._gameTimeoutIdentifier);
+        } else {
+            //resumeGame
+            this.play();
+        }
+        this._gameTimeoutIdentifier = null;
     }
 }

@@ -5,17 +5,19 @@
     <title>The Snake Game</title>
 </head>
 
-<body>
-    <h1>Snake</h1>
+<body class="snake">
+    <h1 class="snake__title">Snake</h1>
+    <div class="snake__game-screen">
+        <section id="score"></section>
+        <div id="snake-game" class="snake__game">
+        </div>
+    </div>
+    <div class="snake__game-over-screen">
+        Game Over
+    </div>
     <div class="snake__start-screen">
         <div>To start a game press SPACE</div>
     </div>
-    <div class="snake__game-screen">
-        <section id="score"></section>
-        <div id="snake__game">
-        </div>
-    </div>
-    <div class="snake__game-over-screen"></div>
 </body>
 <script src="index.ts"></script>
 
