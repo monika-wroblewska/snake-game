@@ -16,7 +16,7 @@ export const renderCleanGameScreen: { (): void } = () => {
     for (let rowNum: number = FIELD_ROWS - 1; rowNum >= 0; rowNum--) {
         let row = '';
         for (let colNum: number = 0; colNum < FIELD_COLUMNS; colNum++) {
-            row += `<div class="field row${rowNum} col${colNum}"></div>`
+            row += `<div class="tile row${rowNum} col${colNum}"></div>`
         }
         fieldHTML += `<div class="game-row">${row}</div>`;
     }
@@ -30,13 +30,13 @@ export const renderGameState: { (postionArr: IPosition[], awardPoint: IPosition 
     //map the snake's position
     positionArr.map((position, index) => {
         if (index === 0) {
-            addClass(position, 'field--head');
+            addClass(position, 'tile--head');
         }
-        addClass(position, 'field--active');
+        addClass(position, 'tile--active');
     });
     //add awardPoint position
     if (awardPoint) {
-        addClass(awardPoint, 'field--award');
+        addClass(awardPoint, 'tile--award');
     }
 };
 

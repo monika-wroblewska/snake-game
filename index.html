@@ -3,22 +3,26 @@
 
 <head>
     <title>The Snake Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Saira" rel="stylesheet">
     <link rel="stylesheet" src="/css/all.css" />
 </head>
 
-<body class="snake">
-    <h1 class="snake__title">Snake</h1>
-    <div class="snake__game-screen">
-        <section id="score"></section>
-        <div id="snake-game" class="snake__game">
+<body>
+    <div class="game">
+        <header class="game__header">
+            <h1 class="game__title">Snake</h1>
+            <section class="game__score">points <span id="score" class="game__score game__score--points"></span></section>
+        </header>
+        <div class="game__screen">
+            <div id="snake-game"></div>
+            <div class="game__state-screen game__state-screen--start">
+                <div class="game__message">Press SPACE to start a game</div>
+            </div>
+            <div class="game__state-screen  game__state-screen--game-over">
+                <div class="game__message">GAME OVER</div>
+            </div>
         </div>
-    </div>
-    <div class="snake__game-over-screen">
-        Game Over
-        <i class="fa fa-bone" />
-    </div>
-    <div class="snake__start-screen">
-        <div>To start a game press SPACE</div>
+        <div class="game__info">Press SPACE to pause/resume</div>
     </div>
 </body>
 <script src="index.ts"></script>

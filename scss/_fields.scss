@@ -1,6 +1,7 @@
-.field{
-    width: 30px;
-    height: 30px;
+@import '_vars';
+.tile{
+    width: $tileSize;
+    height: $tileSize;
     &--active{
         background-color: red;
     }
@@ -8,20 +9,15 @@
         background-color: blue;
     }
     &--award{
-        background-color: pink;
-        &::before{
-        font-family: "Font Awesome 5 Free";
-        content: "\f5d7";
-        color: black;
-        size: 23px;
-    }
+        background-color: yellow;
     }
 }
+
 
 .game-fields{
         display: inline-flex;
         flex-direction: column;
-        border: 1px solid black;
+        border: 3px solid $colorFieldBorder;
     }
     
 .game-row{
