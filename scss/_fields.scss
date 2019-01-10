@@ -4,8 +4,17 @@
     &--active{
         background-color: red;
     }
+    &--head{
+        background-color: blue;
+    }
     &--award{
-        background-color: green;
+        background-color: pink;
+        &::before{
+        font-family: "Font Awesome 5 Free";
+        content: "\f5d7";
+        color: black;
+        size: 23px;
+    }
     }
 }
 

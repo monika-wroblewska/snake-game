@@ -1,5 +1,8 @@
 import { IPosition } from './interfaces';
-import { FIELD_SIZE } from './constants';
+import {
+    FIELD_COLUMNS,
+    FIELD_ROWS
+} from './constants';
 
 const addClass: { (positions: IPosition, className: string): void } = (position, className) => {
     let element = document.getElementsByClassName(`row${position.row} col${position.col}`);
@@ -10,10 +13,10 @@ const addClass: { (positions: IPosition, className: string): void } = (position,
 
 export const renderCleanGameScreen: { (): void } = () => {
     let fieldHTML: string = '';
-    for (let i: number = FIELD_SIZE - 1; i >= 0; i--) {
+    for (let rowNum: number = FIELD_ROWS - 1; rowNum >= 0; rowNum--) {
         let row = '';
-        for (let j: number = 0; j < FIELD_SIZE; j++) {
-            row += `<div class="field row${i} col${j}"></div>`
+        for (let colNum: number = 0; colNum < FIELD_COLUMNS; colNum++) {
+            row += `<div class="field row${rowNum} col${colNum}"></div>`
         }
         fieldHTML += `<div class="game-row">${row}</div>`;
     }
@@ -25,7 +28,10 @@ export const renderCleanGameScreen: { (): void } = () => {
 
 export const renderGameState: { (postionArr: IPosition[], awardPoint: IPosition | null): void } = (positionArr, awardPoint) => {
     //map the snake's position
-    positionArr.map((position) => {
+    positionArr.map((position, index) => {
+        if (index === 0) {
+            addClass(position, 'field--head');
+        }
         addClass(position, 'field--active');
     });
     //add awardPoint position

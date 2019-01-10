@@ -34,7 +34,7 @@ export class Game {
         this._awardPointPosition = null;
         this._awardPoints = 10;
         this._gameTimeoutIdentifier = null;
-        this._gameTimeoutMiliseconds = 300;
+        this._gameTimeoutMiliseconds = 200;
         this._currentDirection = RIGHT;
         this._newDirection = null;
     }

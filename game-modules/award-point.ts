@@ -1,5 +1,8 @@
 import { IPosition } from './interfaces';
-import { FIELD_SIZE } from './constants';
+import {
+    FIELD_ROWS,
+    FIELD_COLUMNS
+} from './constants';
 import { checkFieldAvailability } from './check-positions';
 
 const calculateRandomPosition: { (fieldSize: number): number } = (fieldSize) => {
@@ -8,8 +11,8 @@ const calculateRandomPosition: { (fieldSize: number): number } = (fieldSize) => 
 
 const getNewPoint: { (): IPosition } = () => {
     return {
-        row: calculateRandomPosition(FIELD_SIZE),
-        col: calculateRandomPosition(FIELD_SIZE)
+        row: calculateRandomPosition(FIELD_ROWS),
+        col: calculateRandomPosition(FIELD_COLUMNS)
     }
 }
 export const setAwardPoint: { (positionArr: IPosition[]): IPosition } = (positionArr) => {

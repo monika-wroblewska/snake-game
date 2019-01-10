@@ -1,10 +1,17 @@
 import { IPosition } from './interfaces';
-import {FIELD_SIZE, UP, DOWN, LEFT, RIGHT} from './constants';
+import {
+    FIELD_ROWS,
+    FIELD_COLUMNS,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+} from './constants';
 
 export const checkGameFieldConstraints: { (position: IPosition): boolean } = (position) => {
-    if (position.row < 0 || position.row >= FIELD_SIZE) {
+    if (position.row < 0 || position.row >= FIELD_ROWS) {
         return false;
-    } else if (position.col < 0 || position.col >= FIELD_SIZE) {
+    } else if (position.col < 0 || position.col >= FIELD_COLUMNS) {
         return false;
     } else {
         return true;
