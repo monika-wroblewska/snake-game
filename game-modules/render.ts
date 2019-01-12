@@ -22,16 +22,13 @@ export const renderCleanGameScreen: { (): void } = () => {
     }
     const fieldElement = document.getElementById('snake-game');
     if (fieldElement) {
-        fieldElement.innerHTML = `<div class="game-fields">${fieldHTML}</div>`
+        fieldElement.innerHTML = `<div class="game-field">${fieldHTML}</div>`
     }
 };
 
 export const renderGameState: { (postionArr: IPosition[], awardPoint: IPosition | null): void } = (positionArr, awardPoint) => {
     //map the snake's position
     positionArr.map((position, index) => {
-        if (index === 0) {
-            addClass(position, 'tile--head');
-        }
         addClass(position, 'tile--active');
     });
     //add awardPoint position

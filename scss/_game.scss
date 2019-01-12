@@ -1,30 +1,40 @@
 @import '_vars';
-.game{
+
+.game {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     display: inline-flex;
     flex-direction: column;
-    &__header{
+
+    &__header {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
         margin-bottom: -15px;
     }
+
     &__title {
         color: $colorTitle;
         font-family: $fontTitle;
         font-size: 96px;
-        line-height: 1;
     }
+
     &__score {
         font-family: $fontRegular;
         font-size: 36px;
+        margin-bottom: 10px;
+        
         &--points {
             font-size: 44px;
         }
-        margin-bottom: 10px;
     }
-    &__screen{
+
+    &__screen {
         position: relative;
     }
+
     &__state-screen {
         position: absolute;
         top: 0;
@@ -33,17 +43,27 @@
         height: 100%;
         background-color: rgba($colorStartScreenBackground, .5);
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        visibility: hidden;
     }
-    &__message{
+
+    &__message {
         margin-top: -25px;
         font-family: $fontRegular;
         font-size: 48px;
+
+        &--small {
+            margin-top: 20px;
+            font-size: 24px;
+        }
     }
-    &__info{
+
+    &__info {
         font-family: $fontRegular;
         font-size: 24px;
         text-align: center;
+        visibility: hidden;
     }
 }

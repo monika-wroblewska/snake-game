@@ -11,18 +11,26 @@
     <div class="game">
         <header class="game__header">
             <h1 class="game__title">Snake</h1>
-            <section class="game__score">points <span id="score" class="game__score game__score--points"></span></section>
+            <section class="game__score">points <span id="score" class="game__score game__score--points">0</span></section>
         </header>
         <div class="game__screen">
-            <div id="snake-game"></div>
-            <div class="game__state-screen game__state-screen--start">
-                <div class="game__message">Press SPACE to start a game</div>
+            <div id="snake-game">
+                <!-- here goes the generated content -->
             </div>
-            <div class="game__state-screen  game__state-screen--game-over">
+            <div id="game-start-screen" class="game__state-screen">
+                <div class="game__message">Press ENTER to start a game</div>
+            </div>
+            <div id="game-over-screen" class="game__state-screen">
                 <div class="game__message">GAME OVER</div>
+                <div class="game__message game__message--small">Press ENTER to play once more</div>
+            </div>
+            <div id="game-paused-screen" class="game__state-screen">
+                <div class="game__message">
+                    Press SPACE to resume
+                </div>
             </div>
         </div>
-        <div class="game__info">Press SPACE to pause/resume</div>
+        <div id="game-info" class="game__info">Press SPACE to pause</div>
     </div>
 </body>
 <script src="index.ts"></script>
