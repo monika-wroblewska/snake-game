@@ -1,0 +1,20 @@
+.button {
+    width: 60px;
+    height: 60px;
+    border: 1px solid $colorFieldBorder;
+    border-radius: 5px;
+    background-color: $colorStartScreenBackground;
+    font-size:35px;
+    &--options {
+        padding: 5px 20px;
+        font-family: $fontRegular;
+        font-size: 18px;
+        width: auto;
+        height: auto;
+        background-color: rgba(white, .3);
+    }
+    &__altered-margin {
+        position: relative;
+        top: -5px;
+    }
+}

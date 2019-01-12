@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
+    "build": "parcel build index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,7 +18,7 @@
     "scripts": "^0.1.0"
   },
   "devDependencies": {
-    "sass": "^1.15.2",
+    "sass": "^1.16.0",
     "typescript": "^3.2.2"
   }
 }
