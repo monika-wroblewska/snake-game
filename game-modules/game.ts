@@ -13,15 +13,15 @@ import {
 } from './check-positions';
 import { setAwardPoint } from './award-point';
 import {
-    showStartScreen,
-    hideStartScreen,
-    showGameOverScreen,
-    hideGameOverScreen,
+    showStartMsg,
+    hideStartMsg,
+    showGameOverMsg,
+    hideGameOverMsg,
     showGameInfo,
     hideGameInfo,
-    hidePausedScreen,
-    showPausedScreen
-} from './screens';
+    hidePausedMsg,
+    showPausedMsg as showPausedScreen
+} from './showHideElements';
 
 /**
  * GAME CLASS
@@ -32,7 +32,8 @@ export class Game {
     private positionArr: IPosition[];
     private awardPointPosition: IPosition | null;
     private awardPoints: number;
-    private gameTimeoutIdentifier: NodeJS.Timer | undefined;
+    private gameTimeoutIdentifier: NodeJS.Timer | null;
+    private initTimeout: number;
     private gameTimeoutMiliseconds: number;
     private currentDirection: Symbol;
     private newDirection: Symbol | null;
@@ -40,38 +41,39 @@ export class Game {
     constructor() {
         this.playing = false;
         this.score = 0;
-        this.positionArr = [{ row: 0, col: 0 }]
+        this.positionArr = [{ row: 0, col: 0 }];
         this.awardPointPosition = null;
         this.awardPoints = 10;
-        this.gameTimeoutIdentifier = undefined;
-        this.gameTimeoutMiliseconds = 200;
+        this.gameTimeoutIdentifier = null;
+        this.initTimeout = 300;
+        this.gameTimeoutMiliseconds = 0;
         this.currentDirection = RIGHT;
         this.newDirection = null;
     }
 
     init() {
         renderCleanGameScreen();
-        showStartScreen();
+        showStartMsg();
         this.addEventListeners();
     }
 
     addEventListeners() {
-        document.addEventListener('keyup', this.setKeyboardControls.bind(this), false)
+        document.addEventListener('keyup', this.setKeyboardControls.bind(this), false);
     }
 
     setKeyboardControls(event: KeyboardEvent) {
         switch (event.keyCode) {
             case 38:
-                this.newDirection = UP;
+                this.updateNewDirection(UP);
                 break;
             case 40:
-                this.newDirection = DOWN;
+                this.updateNewDirection(DOWN);
                 break;
             case 37:
-                this.newDirection = LEFT;
+                this.updateNewDirection(LEFT);
                 break;
             case 39:
-                this.newDirection = RIGHT;
+                this.updateNewDirection(RIGHT);
                 break;
             case 32:
                 this.pause();
@@ -84,17 +86,18 @@ export class Game {
         }
     }
 
+    updateNewDirection(direction: Symbol) {
+        if (!this.isGamePaused()) {
+            this.newDirection = direction;
+        }
+    }
+
     start() {
-        hideStartScreen();
-        hideGameOverScreen();
-        showGameInfo();
         this.resetGame();
         this.playing = true;
         this.positionArr = [{ row: 0, col: 0 }];
         this.awardPointPosition = setAwardPoint(this.positionArr);
-        renderCleanGameScreen();
-        renderGameState(this.positionArr, this.awardPointPosition);
-        renderScore(this.score);
+        this.playGameScreen();
         this.play();
     }
 
@@ -102,7 +105,9 @@ export class Game {
         this.currentDirection = RIGHT;
         this.newDirection = null;
         this.score = 0;
+        this.gameTimeoutMiliseconds = this.initTimeout;
     }
+
     play() {
         this.gameTimeoutIdentifier = setTimeout(() => {
             this.gameMove();
@@ -111,6 +116,29 @@ export class Game {
                 this.play();
             }
         }, this.gameTimeoutMiliseconds);
+    }
+
+    gameOver() {
+        this.playing = false;
+        this.gameOverScreen();
+    }
+
+    playGameScreen() {
+        hideStartMsg();
+        hideGameOverMsg();
+        showGameInfo();
+        renderCleanGameScreen();
+        renderGameState(this.positionArr, this.awardPointPosition);
+        renderScore(this.score);
+    }
+
+    gameOverScreen() {
+        hideGameInfo();
+        showGameOverMsg();
+    }
+
+    pauseGameScreen() {
+
     }
 
     gameMove() {
@@ -149,6 +177,7 @@ export class Game {
             this.positionArr.push(this.awardPointPosition);
             this.awardPointPosition = setAwardPoint(this.positionArr);
             this.addPointsToScore(this.awardPoints);
+            this.increaseSpeed();
         }
         this.positionArr.unshift(newPosition);
         this.positionArr.pop();
@@ -157,22 +186,23 @@ export class Game {
             renderGameState(this.positionArr, this.awardPointPosition);
         }
     }
-    gameOver() {
-        this.playing = false;
-        hideGameInfo();
-        showGameOverScreen();
-    }
 
     addPointsToScore(points: number) {
         this.score += points;
         renderScore(this.score);
     }
 
+    increaseSpeed() {
+        if ((this.score > 0) && !(this.score % 30)) {
+            this.gameTimeoutMiliseconds -= 15;
+        }
+    }
+
     pause() {
         if (this.playing) {
             if (!this.gameTimeoutIdentifier) {
                 this.play();
-                hidePausedScreen();
+                hidePausedMsg();
                 showGameInfo();
             } else {
                 this.removeTimer();
@@ -185,6 +215,12 @@ export class Game {
     removeTimer() {
         let timeout = Number(this.gameTimeoutIdentifier);
         clearTimeout(timeout);
-        this.gameTimeoutIdentifier = undefined;
+        this.gameTimeoutIdentifier = null;
+    }
+
+    isGamePaused() {
+        return this.gameTimeoutIdentifier
+            ? false
+            : true;
     }
 }
